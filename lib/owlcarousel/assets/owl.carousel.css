@@ -1,11 +1,4 @@
-/**
- * Owl Carousel v2.2.1
- * Copyright 2013-2017 David Deutsch
- * Licensed under  ()
- */
-/*
- *  Owl Carousel - Core
- */
+
 .owl-carousel {
   display: none;
   width: 100%;
@@ -87,9 +80,7 @@
 .no-js .owl-carousel {
   display: block; }
 
-/*
- *  Owl Carousel - Animate Plugin
- */
+
 .owl-carousel .animated {
   animation-duration: 1000ms;
   animation-fill-mode: both; }
@@ -125,9 +116,7 @@
 .owl-carousel .owl-item img.owl-lazy {
   transform-style: preserve-3d; }
 
-/*
- * 	Owl Carousel - Video Plugin
- */
+
 .owl-carousel .owl-video-wrapper {
   position: relative;
   height: 100%;

@@ -50,6 +50,7 @@ $(document).ready(function(){
         autoplay: true,
         dots: true,
         loop: true,
+        lazyLoad: true,
         responsive: { 0: {items: 1}, 576: {items: 2}, 768: {items: 3}, 992: {items: 4} }
     });
     

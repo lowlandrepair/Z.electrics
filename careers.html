@@ -17,7 +17,7 @@
     <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <script src="./js/main.js"></script>
+    <script src="./js/main.js" defer></script>
 </head>
 <body>
     <header class="header">
@@ -47,9 +47,9 @@
     </section>
     <div class="career">
         <div class="career-form">
-            <form action="./careers.php" method="POST" enctype="multipart/form-data">
+<form enctype="multipart/form-data" action="mailing/career_mail.php" method="POST">
                 <input type="text" name="name" placeholder="Name" class="career-form-txt" required>
-                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="Contact number" maxlength="10" class="career-form-phone">
+                <input type="tel" id="phone" name="phone"   placeholder="Contact number" class="career-form-phone">
                 <input type="email" name="email" placeholder="Email" class="career-form-email" required>
                 <div class="radio-class">
                     <h2 class="name">Apply For Which Position?</h2>
@@ -88,6 +88,23 @@
                 <input type="submit" value="Submit" name="submit" class="career-form-btn">
             </form>
         </div>
+    </div>
+
+    <!-- Electric Animation Overlay -->
+    <div id="electric-animation-overlay">
+        <svg id="lightning-bolt" width="120" height="200" viewBox="0 0 120 200">
+            <polyline points="60,10 80,80 50,80 90,190 60,110 90,110 30,190 60,80 30,80 60,10"/>
+            <defs>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+        </svg>
+        <div class="electric-flash"></div>
     </div>
 
     <div class="footer">
@@ -168,5 +185,101 @@
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="lib/lightbox/js/lightbox.min.js"></script>
 
+<script>
+    // Electric Animation on Form Submit
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.career-form form');
+        const overlay = document.getElementById('electric-animation-overlay');
+        const bolt = document.getElementById('lightning-bolt');
+        const flash = document.querySelector('.electric-flash');
+        if (form && overlay && bolt && flash) {
+            form.addEventListener('submit', function(e) {
+                // Only animate if not already animating
+                if (!overlay.classList.contains('electric-animate')) {
+                    e.preventDefault();
+                    overlay.style.display = 'flex';
+                    overlay.classList.add('electric-animate');
+                    bolt.classList.add('bolt-animate');
+                    flash.classList.add('flash-animate');
+                    // Use native submit after animation
+                    setTimeout(function() {
+                        overlay.style.display = 'none';
+                        overlay.classList.remove('electric-animate');
+                        bolt.classList.remove('bolt-animate');
+                        flash.classList.remove('flash-animate');
+                        HTMLFormElement.prototype.submit.call(form);
+                    }, 1400);
+                }
+            });
+        }
+        // Hide overlay if navigating away
+        window.addEventListener('beforeunload', function() {
+            if (overlay) overlay.style.display = 'none';
+        });
+    });
+</script>
+<style>
+#electric-animation-overlay {
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    animation: none;
+}
+#electric-animation-overlay.electric-animate {
+    display: flex;
+}
+#lightning-bolt {
+    opacity: 0;
+    transform: scale(0.7) rotate(-10deg);
+    filter: drop-shadow(0 0 30px yellow);
+    transition: opacity 0.1s, transform 0.2s;
+}
+#lightning-bolt.bolt-animate {
+    animation: bolt-flicker 1.2s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+}
+#lightning-bolt polyline {
+    fill: none;
+    stroke: yellow;
+    stroke-width: 8;
+    stroke-linejoin: round;
+    filter: url(#glow);
+}
+@keyframes bolt-flicker {
+    0% { opacity: 0; transform: scale(0.7) rotate(-10deg); }
+    10% { opacity: 1; transform: scale(1.1) rotate(0deg); }
+    20% { opacity: 0.7; }
+    30% { opacity: 1; }
+    40% { opacity: 0.6; }
+    50% { opacity: 1; }
+    60% { opacity: 0.8; }
+    70% { opacity: 1; }
+    80% { opacity: 0.7; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.2) rotate(10deg); }
+}
+.electric-flash {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle, rgba(255,255,0,0.3) 0%, rgba(255,255,255,0.1) 60%, rgba(0,0,0,0.0) 100%);
+    opacity: 0;
+    pointer-events: none;
+}
+.electric-flash.flash-animate {
+    animation: flash-fade 1.2s linear forwards;
+}
+@keyframes flash-fade {
+    0% { opacity: 0.7; }
+    20% { opacity: 0.9; }
+    40% { opacity: 0.5; }
+    60% { opacity: 0.7; }
+    80% { opacity: 0.3; }
+    100% { opacity: 0; }
+}
+</style>
 </body>
 </html>
